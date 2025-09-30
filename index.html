@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Email Case Variation Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 100%;
+            max-width: 900px;
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        .content {
+            padding: 25px;
+        }
+
+        .input-section {
+            margin-bottom: 25px;
+        }
+
+        .input-group {
+            margin-bottom: 20px;
+        }
+
+        .input-label {
+            display: block;
+            font-size: 16px;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 10px;
+        }
+
+        .input-field {
+            width: 100%;
+            padding: 14px 15px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 16px;
+            transition: all 0.3s;
+            font-family: 'Courier New', monospace;
+        }
+
+        .input-field:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .options-section {
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .options-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #555;
+            margin-bottom: 15px;
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .option-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .option-group input {
+            width: 18px;
+            height: 18px;
+        }
+
+        .option-group label {
+            font-size: 14px;
+            color: #555;
+            cursor: pointer;
+        }
+
+        .generate-btn {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            padding: 14px 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            width: 100%;
+        }
+
+        .generate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(79, 70, 229, 0.4);
+        }
+
+        .output-section {
+            margin-top: 25px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #f0f0f0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .count-badge {
+            background: #4f46e5;
+            color: white;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+
+        .output-box {
+            background: #f8fafc;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 20px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .email-item {
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            background: white;
+            border-radius: 8px;
+            border-left: 4px solid #4f46e5;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s;
+            font-family: 'Courier New', monospace;
+        }
+
+        .email-item:hover {
+            transform: translateX(5px);
+        }
+
+        .email-text {
+            font-size: 15px;
+            font-weight: 500;
+            color: #333;
+        }
+
+        .copy-btn {
+            background: #10b981;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 6px 12px;
+            font-size: 13px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .copy-btn:hover {
+            background: #059669;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .action-btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .copy-all-btn {
+            background: #10b981;
+            color: white;
+        }
+
+        .copy-all-btn:hover {
+            background: #059669;
+            transform: translateY(-2px);
+        }
+
+        .clear-btn {
+            background: #ef4444;
+            color: white;
+        }
+
+        .clear-btn:hover {
+            background: #dc2626;
+            transform: translateY(-2px);
+        }
+
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background: #10b981;
+            color: white;
+            padding: 14px 22px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            transform: translateX(150%);
+            transition: transform 0.3s ease;
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .notification.show {
+            transform: translateX(0);
+        }
+
+        .notification.error {
+            background: #ef4444;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                border-radius: 10px;
+            }
+            
+            .header {
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 24px;
+            }
+            
+            .content {
+                padding: 20px;
+            }
+            
+            .options-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .action-buttons {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Email Case Variation Generator</h1>
+            <p>Generate multiple email variations with different letter cases</p>
+        </div>
+        
+        <div class="content">
+            <div class="input-section">
+                <div class="input-group">
+                    <label class="input-label">Enter Email Address</label>
+                    <input type="text" id="emailInput" class="input-field" placeholder="habibaakter24ml@gmail.com" value="habibaakter24ml@gmail.com">
+                </div>
+                
+                <div class="options-section">
+                    <div class="options-title">Generation Options</div>
+                    <div class="options-grid">
+                        <div class="option-group">
+                            <input type="checkbox" id="randomCase" checked>
+                            <label for="randomCase">Random Letter Case</label>
+                        </div>
+                        <div class="option-group">
+                            <input type="checkbox" id="preserveNumbers" checked>
+                            <label for="preserveNumbers">Preserve Numbers</label>
+                        </div>
+                        <div class="option-group">
+                            <input type="checkbox" id="alternateCase">
+                            <label for="alternateCase">Alternate Case Pattern</label>
+                        </div>
+                        <div class="option-group">
+                            <input type="checkbox" id="groupUppercase">
+                            <label for="groupUppercase">Group Uppercase Letters</label>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="input-group">
+                    <label class="input-label">Number of Variations to Generate</label>
+                    <input type="number" id="variationCount" class="input-field" value="10" min="1" max="500">
+                </div>
+                
+                <button class="generate-btn" onclick="generateEmailVariations()">Generate Email Variations</button>
+            </div>
+            
+            <div class="output-section">
+                <h2 class="section-title">
+                    Generated Email Variations
+                    <span class="count-badge" id="countBadge">0</span>
+                </h2>
+                <div class="output-box" id="outputBox">
+                    <p style="text-align: center; color: #999; padding: 40px;">
+                        Email variations will appear here after generation
+                    </p>
+                </div>
+                
+                <div class="action-buttons">
+                    <button class="action-btn copy-all-btn" onclick="copyAllEmails()">Copy All Emails</button>
+                    <button class="action-btn clear-btn" onclick="clearOutput()">Clear Output</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="notification" id="notification">
+        <span>✅</span>
+        <span id="notificationText">Copied to clipboard!</span>
+    </div>
+
+    <script>
+        // Show notification function
+        function showNotification(message, type = 'success') {
+            const notification = document.getElementById('notification');
+            const notificationText = document.getElementById('notificationText');
+            
+            notificationText.textContent = message;
+            
+            if (type === 'error') {
+                notification.classList.add('error');
+                notification.querySelector('span').textContent = '❌';
+            } else {
+                notification.classList.remove('error');
+                notification.querySelector('span').textContent = '✅';
+            }
+            
+            notification.classList.add('show');
+            
+            setTimeout(() => {
+                notification.classList.remove('show');
+            }, 3000);
+        }
+        
+        // Generate email variations with different cases
+        function generateEmailVariations() {
+            const emailInput = document.getElementById('emailInput').value.trim();
+            const variationCount = parseInt(document.getElementById('variationCount').value);
+            const randomCase = document.getElementById('randomCase').checked;
+            const preserveNumbers = document.getElementById('preserveNumbers').checked;
+            const alternateCase = document.getElementById('alternateCase').checked;
+            const groupUppercase = document.getElementById('groupUppercase').checked;
+            
+            // Validation
+            if (!emailInput) {
+                showNotification('Please enter an email address', 'error');
+                return;
+            }
+            
+            // Basic email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(emailInput)) {
+                showNotification('Please enter a valid email address', 'error');
+                return;
+            }
+            
+            if (variationCount < 1 || variationCount > 500) {
+                showNotification('Please enter a valid number of variations (1-500)', 'error');
+                return;
+            }
+            
+            // Extract username and domain
+            const atIndex = emailInput.indexOf('@');
+            const username = emailInput.substring(0, atIndex);
+            const domain = emailInput.substring(atIndex);
+            
+            // Generate variations
+            const variations = new Set();
+            variations.add(emailInput); // Add original
+            
+            while (variations.size < variationCount + 1) { // +1 because we added original
+                let variation;
+                
+                if (alternateCase) {
+                    variation = generateAlternateCase(username, preserveNumbers) + domain;
+                } else if (groupUppercase) {
+                    variation = generateGroupUppercase(username, preserveNumbers) + domain;
+                } else if (randomCase) {
+                    variation = generateRandomCase(username, preserveNumbers) + domain;
+                } else {
+                    variation = generateRandomCase(username, preserveNumbers) + domain;
+                }
+                
+                variations.add(variation);
+                
+                // Safety break to prevent infinite loop
+                if (variations.size > 500) break;
+            }
+            
+            // Convert to array and remove the original if it's the only one
+            const variationArray = Array.from(variations);
+            if (variationArray.length > 1) {
+                // Remove the original from the list if we have other variations
+                const originalIndex = variationArray.indexOf(emailInput);
+                if (originalIndex !== -1) {
+                    variationArray.splice(originalIndex, 1);
+                }
+            }
+            
+            // Display the variations
+            displayEmails(variationArray);
+            document.getElementById('countBadge').textContent = variationArray.length;
+            showNotification(`Generated ${variationArray.length} email variations`);
+        }
+        
+        // Generate random case variation
+        function generateRandomCase(text, preserveNumbers) {
+            let result = '';
+            
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                
+                if (preserveNumbers && /[0-9]/.test(char)) {
+                    result += char;
+                } else {
+                    // Randomly decide to make character uppercase or lowercase
+                    if (Math.random() > 0.5) {
+                        result += char.toUpperCase();
+                    } else {
+                        result += char.toLowerCase();
+                    }
+                }
+            }
+            
+            return result;
+        }
+        
+        // Generate alternate case pattern (like HaBiBaAkTeR)
+        function generateAlternateCase(text, preserveNumbers) {
+            let result = '';
+            let upper = Math.random() > 0.5; // Start with random case
+            
+            for (let i = 0; i < text.length; i++) {
+                const char = text[i];
+                
+                if (preserveNumbers && /[0-9]/.test(char)) {
+                    result += char;
+                } else {
+                    if (upper) {
+                        result += char.toUpperCase();
+                    } else {
+                        result += char.toLowerCase();
+                    }
+                    
+                    // Alternate case for next character
+                    upper = !upper;
+                }
+            }
+            
+            return result;
+        }
+        
+        // Generate grouped uppercase patterns
+        function generateGroupUppercase(text, preserveNumbers) {
+            let result = '';
+            const groups = splitIntoGroups(text, 2 + Math.floor(Math.random() * 3)); // Groups of 2-4 chars
+            
+            for (const group of groups) {
+                let groupText = '';
+                
+                // Decide if this group should be uppercase or not
+                const makeUppercase = Math.random() > 0.5;
+                
+                for (let i = 0; i < group.length; i++) {
+                    const char = group[i];
+                    
+                    if (preserveNumbers && /[0-9]/.test(char)) {
+                        groupText += char;
+                    } else {
+                        if (makeUppercase) {
+                            groupText += char.toUpperCase();
+                        } else {
+                            groupText += char.toLowerCase();
+                        }
+                    }
+                }
+                
+                result += groupText;
+            }
+            
+            return result;
+        }
+        
+        // Split text into groups of specified size
+        function splitIntoGroups(text, groupSize) {
+            const groups = [];
+            
+            for (let i = 0; i < text.length; i += groupSize) {
+                groups.push(text.substring(i, i + groupSize));
+            }
+            
+            return groups;
+        }
+        
+        // Display generated emails
+        function displayEmails(emails) {
+            const outputBox = document.getElementById('outputBox');
+            
+            if (emails.length === 0) {
+                outputBox.innerHTML = '<p style="text-align: center; color: #999; padding: 40px;">No email variations generated</p>';
+                return;
+            }
+            
+            let html = '';
+            emails.forEach((email, index) => {
+                html += `
+                    <div class="email-item">
+                        <span class="email-text">${email}</span>
+                        <button class="copy-btn" onclick="copySingleEmail('${email}')">Copy</button>
+                    </div>
+                `;
+            });
+            
+            outputBox.innerHTML = html;
+        }
+        
+        // Copy a single email to clipboard
+        function copySingleEmail(email) {
+            navigator.clipboard.writeText(email).then(() => {
+                showNotification('Email copied to clipboard');
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                showNotification('Failed to copy email', 'error');
+            });
+        }
+        
+        // Copy all generated emails to clipboard
+        function copyAllEmails() {
+            const emailItems = document.querySelectorAll('.email-item .email-text');
+            if (emailItems.length === 0) {
+                showNotification('No emails to copy', 'error');
+                return;
+            }
+            
+            const emails = Array.from(emailItems).map(item => item.textContent).join('\n');
+            
+            navigator.clipboard.writeText(emails).then(() => {
+                showNotification('All emails copied to clipboard');
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+                showNotification('Failed to copy emails', 'error');
+            });
+        }
+        
+        // Clear the output
+        function clearOutput() {
+            const outputBox = document.getElementById('outputBox');
+            outputBox.innerHTML = '<p style="text-align: center; color: #999; padding: 40px;">Email variations will appear here after generation</p>';
+            
+            document.getElementById('countBadge').textContent = '0';
+            document.getElementById('emailInput').value = 'habibaakter24ml@gmail.com';
+            document.getElementById('variationCount').value = '10';
+            
+            showNotification('Output cleared');
+        }
+        
+        // Initialize with sample email
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('emailInput').value = 'habibaakter24ml@gmail.com';
+        });
+    </script>
+</body>
+</html>
